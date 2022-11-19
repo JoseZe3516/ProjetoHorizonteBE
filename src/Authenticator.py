@@ -24,7 +24,7 @@ def validator(dictionary: dict, validator_type: str) -> bool:
     """
     schema: dict = {}
 
-    if validator_type in ("opcao1", "opcao2"):
+    if validator_type in ("Create", "Read", "Update", "Delete"):
         schema = get_json_schema(validator_type)
     else:
         return False
@@ -68,10 +68,16 @@ def get_json_schema(validator_type: str) -> dict:
     """
     path: str = ""
 
-    if validator_type in ("opcao1"):
-        path = "caminho opcao 1"
-    elif validator_type in ("opcao2"):
-        path = "caminho opcao 2"
+    
+
+    if validator_type in ("Crate"):
+        path = "Data/{}".format("cpf")
+    elif validator_type in ("Read"):
+        path = "Data/{}".format("cpf")
+    elif validator_type in ("Update"):
+        path = "Data/{}".format("cpf")
+    elif validator_type in ("Delete"):
+        path = "Data/{}".format("cpf")
     else:
         return False
 
