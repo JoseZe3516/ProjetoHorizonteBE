@@ -1,62 +1,69 @@
 import os
 
-from json import dumps
-
 from flask import Flask, Response, request
 from flask_restful import Api, Resource
-
+from src.sistema_arquivos import FileSystem
 
 UPLOAD_FOLDER = os.getcwd()
 
 app = Flask(__name__)
-
-
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.secret_key = b'CDgWUjqcCaNURJD9AkcRgKaTucApXBGH'
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = 'filesystem'
-
 api = Api(app)
 
-Data = "C:/Users/José/Desktop/Facul/TCC/Data/44555756851"
-
-os.chdir(Data)
-
-class PHAuth(Resource):
+class Endpoint(Resource):
 
     @app.route("/api/v1/FileSystem/Create", methods=["POST"])       
-    def Create(*self):
+    def create_file():
         
-        with open("cpf.txt", "x") as file:
-            os.rename(file)
+        file_name: str = request.args["FileName"]
+        cpf: str = request.args["CPF"]
+        file: bytes = request.data
 
-        return Response("Autenticado", status=200)
+        file_system: FileSystem = FileSystem(cpf)
+
+        if not file_system.create_file(file_name, file):
+            return Response("Falha ao criar o arquivo", 500)
+
+        return Response("Criado", status=201)
         
     @app.route("/api/v1/FileSystem/Read", methods=["GET"])       
-    def Read(*self):
+    def read_file():
         
-        with open("cpf.txt", "r", "Data") as file:
-            print(file.read())
+        file_name: str = request.args["FileName"]
+        cpf: str = request.args["CPF"]        
 
-        return Response("Autenticado", status = 200)
+        file_system: FileSystem = FileSystem(cpf)
+        file: bytes = file_system.read_file(file_name)
 
-    @app.route("/api/v1/FileSystem/Update", methods = ["POST"])
+        if file == None: return Response("Arquivo não encontrado", 404)
+
+        return Response(file, status=200)
+
+    @app.route("/api/v1/FileSystem/Update", methods = ["PUT"])
     def Update(*self):
 
-        with open("file.txt", "w") as file:
-            file.write("jesus")
+        file_name: str = request.args["FileName"]
+        cpf: str = request.args["CPF"]
+        file: bytes = request.data
 
-        return Response("Autenticado", status = 200)
+        file_system: FileSystem = FileSystem(cpf)
+
+        if not file_system.update_file(file_name, file):
+            return Response("Falha ao alterar o arquivo", 500)
+
+        return Response("Alterado", status=200)
 
     @app.route("/api/v1/FileSystem/Delete", methods = ["DELETE"])
     def Delete(*self):
 
-        if os.path.exists("file.txt"):
-            os.remove("file.txt")
-        else:
-            print ("the file does not exist")
+        file_name: str = request.args["FileName"]
+        cpf: str = request.args["CPF"]        
 
-        return Response("Autenticado", status = 200)
+        file_system: FileSystem = FileSystem(cpf)
+
+        if not file_system.delete_file(file_name):
+            return Response("Falha ao remover o arquivo", 400)
+
+        return Response("Removido", status=200)
 
 if __name__ == '__main__':    
     app.run(host='0.0.0.0', port=2000)
