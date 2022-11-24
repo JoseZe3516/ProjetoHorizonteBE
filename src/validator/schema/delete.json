@@ -1,0 +1,14 @@
+{
+    "type": "object",
+    "required": ["FileName", "CPF"],
+    "properties": {
+        "FileName": {
+            "type": "string"
+        },
+        "CPF": {
+            "type": "string",
+            "minLenght": 11,
+            "maxLenght": 11
+        }
+    }
+}

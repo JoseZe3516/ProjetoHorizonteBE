@@ -1,8 +1,10 @@
 import os
 
+from json import dumps
 from flask import Flask, Response, request
 from flask_restful import Api, Resource
 from src.sistema_arquivos import FileSystem
+from src.validator.validador import validator, get_json_schema
 
 UPLOAD_FOLDER = os.getcwd()
 
@@ -13,10 +15,14 @@ class Endpoint(Resource):
 
     @app.route("/api/v1/FileSystem/Create", methods=["POST"])       
     def create_file():
+        schema: str = "create"
         
+        if not validator(request.args, schema):
+            return Response(dumps(get_json_schema(schema)), 400, mimetype="application/json")
+
         file_name: str = request.args["FileName"]
         cpf: str = request.args["CPF"]
-        file: bytes = request.data
+        file: bytes = request.data        
 
         file_system: FileSystem = FileSystem(cpf)
 
@@ -27,6 +33,10 @@ class Endpoint(Resource):
         
     @app.route("/api/v1/FileSystem/Read", methods=["GET"])       
     def read_file():
+        schema: str = "read"
+        
+        if not validator(request.args, schema):
+            return Response(dumps(get_json_schema(schema)), 400, mimetype="application/json")
         
         file_name: str = request.args["FileName"]
         cpf: str = request.args["CPF"]        
@@ -40,7 +50,11 @@ class Endpoint(Resource):
 
     @app.route("/api/v1/FileSystem/Update", methods = ["PUT"])
     def Update(*self):
-
+        schema: str = "update"
+        
+        if not validator(request.args, schema):
+            return Response(dumps(get_json_schema(schema)), 400, mimetype="application/json")
+        
         file_name: str = request.args["FileName"]
         cpf: str = request.args["CPF"]
         file: bytes = request.data
@@ -54,7 +68,11 @@ class Endpoint(Resource):
 
     @app.route("/api/v1/FileSystem/Delete", methods = ["DELETE"])
     def Delete(*self):
-
+        schema: str = "delete"
+        
+        if not validator(request.args, schema):
+            return Response(dumps(get_json_schema(schema)), 400, mimetype="application/json")
+        
         file_name: str = request.args["FileName"]
         cpf: str = request.args["CPF"]        
 
