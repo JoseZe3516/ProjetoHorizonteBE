@@ -83,5 +83,21 @@ class Endpoint(Resource):
 
         return Response("Removido", status=200)
 
+    @app.route("/api/v1/FileSystem/ListFiles", methods=["GET"])       
+    def list_files():
+        schema: str = "list_files"
+        
+        if not validator(request.args, schema):
+            return Response(dumps(get_json_schema(schema)), 400, mimetype="application/json")
+                
+        cpf: str = request.args["CPF"]        
+
+        file_system: FileSystem = FileSystem(cpf)
+        file_list: list = file_system.list_files()
+
+        if file_list == None: return Response("Diretório inexistente", 404)
+
+        return Response(file_list, status=200, mimetype="application/json")
+    
 if __name__ == '__main__':    
     app.run(host='0.0.0.0', port=2000)

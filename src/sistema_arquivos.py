@@ -60,3 +60,9 @@ class FileSystem:
             return False
         
         return True
+    
+    def list_files(self) -> list:        
+
+        if not os.path.exists(self.folder_path): return None
+
+        return os.listdir(self.folder_path)

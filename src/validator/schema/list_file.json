@@ -1,0 +1,9 @@
+{
+    "type": "object",
+    "required": ["FileName"],
+    "properties": {
+        "FileName": {
+            "type": "string"
+        }
+    }
+}
