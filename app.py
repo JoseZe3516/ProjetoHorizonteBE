@@ -97,7 +97,7 @@ class Endpoint(Resource):
 
         if file_list == None: return Response("Diretório inexistente", 404)
 
-        return Response(file_list, status=200, mimetype="application/json")
+        return Response(dumps(file_list), status=200, mimetype="application/json")
     
 if __name__ == '__main__':    
     app.run(host='0.0.0.0', port=2000)

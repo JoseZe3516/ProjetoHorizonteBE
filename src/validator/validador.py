@@ -66,7 +66,7 @@ def get_json_schema(validator_type: str) -> dict:
     """
     path: str = ""
 
-    if validator_type in ("create", "read", "update", "delete"):        
+    if validator_type in ("create", "read", "update", "delete", "list_files"):        
         path = "./src/validator/schema/{}.json".format(validator_type)
     else:
         return False
