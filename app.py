@@ -13,75 +13,74 @@ api = Api(app)
 
 class Endpoint(Resource):
 
-    @app.route("/api/v1/FileSystem/Create", methods=["POST"])       
-    def create_file():
-        schema: str = "create"
-        
-        if not validator(request.args, schema):
-            return Response(dumps(get_json_schema(schema)), 400, mimetype="application/json")
+    @app.route("/api/v1/FileSystem", methods=["POST", "GET", "PUT", "DELETE"])       
+    def file_system(*self):
 
-        file_name: str = request.args["FileName"]
-        cpf: str = request.args["CPF"]
-        file: bytes = request.data        
+        if request.method == "POST":
+            schema: str = "create"
+            
+            if not validator(request.args, schema):
+                return Response(dumps(get_json_schema(schema)), 400, mimetype="application/json")
 
-        file_system: FileSystem = FileSystem(cpf)
+            file_name: str = request.args["FileName"]
+            cpf: str = request.args["CPF"]
+            file: bytes = request.data        
 
-        if not file_system.create_file(file_name, file):
-            return Response("Falha ao criar o arquivo", 500)
+            file_system: FileSystem = FileSystem(cpf)
 
-        return Response("Criado", status=201)
-        
-    @app.route("/api/v1/FileSystem/Read", methods=["GET"])       
-    def read_file():
-        schema: str = "read"
-        
-        if not validator(request.args, schema):
-            return Response(dumps(get_json_schema(schema)), 400, mimetype="application/json")
-        
-        file_name: str = request.args["FileName"]
-        cpf: str = request.args["CPF"]        
+            if not file_system.create_file(file_name, file):
+                return Response("Falha ao criar o arquivo", 500)
 
-        file_system: FileSystem = FileSystem(cpf)
-        file: bytes = file_system.read_file(file_name)
+            return Response("Criado", status=201)
+            
+        elif request.method == "GET":
+            schema: str = "read"
+            
+            if not validator(request.args, schema):
+                return Response(dumps(get_json_schema(schema)), 400, mimetype="application/json")
+            
+            file_name: str = request.args["FileName"]
+            cpf: str = request.args["CPF"]        
 
-        if file == None: return Response("Arquivo não encontrado", 404)
+            file_system: FileSystem = FileSystem(cpf)
+            file: bytes = file_system.read_file(file_name)
 
-        return Response(file, status=200)
+            if file == None: return Response("Arquivo não encontrado", 404)
 
-    @app.route("/api/v1/FileSystem/Update", methods = ["PUT"])
-    def Update(*self):
-        schema: str = "update"
-        
-        if not validator(request.args, schema):
-            return Response(dumps(get_json_schema(schema)), 400, mimetype="application/json")
-        
-        file_name: str = request.args["FileName"]
-        cpf: str = request.args["CPF"]
-        file: bytes = request.data
+            return Response(file, status=200)
 
-        file_system: FileSystem = FileSystem(cpf)
+        elif request.method == "PUT":
+            schema: str = "update"
+            
+            if not validator(request.args, schema):
+                return Response(dumps(get_json_schema(schema)), 400, mimetype="application/json")
+            
+            file_name: str = request.args["FileName"]
+            cpf: str = request.args["CPF"]
+            file: bytes = request.data
 
-        if not file_system.update_file(file_name, file):
-            return Response("Falha ao alterar o arquivo", 500)
+            file_system: FileSystem = FileSystem(cpf)
 
-        return Response("Alterado", status=200)
+            if not file_system.update_file(file_name, file):
+                return Response("Falha ao alterar o arquivo", 500)
 
-    @app.route("/api/v1/FileSystem/Delete", methods = ["DELETE"])
-    def Delete(*self):
-        schema: str = "delete"
-        
-        if not validator(request.args, schema):
-            return Response(dumps(get_json_schema(schema)), 400, mimetype="application/json")
-        
-        file_name: str = request.args["FileName"]
-        cpf: str = request.args["CPF"]        
+            return Response("Alterado", status=200)
 
-        file_system: FileSystem = FileSystem(cpf)
+        elif request.method == "DELETE":
+            schema: str = "delete"
+            
+            if not validator(request.args, schema):
+                return Response(dumps(get_json_schema(schema)), 400, mimetype="application/json")
+            
+            file_name: str = request.args["FileName"]
+            cpf: str = request.args["CPF"]        
 
-        if not file_system.delete_file(file_name):
-            return Response("Falha ao remover o arquivo", 400)
+            file_system: FileSystem = FileSystem(cpf)
 
-        return Response("Removido", status=200)
+            if not file_system.delete_file(file_name):
+                return Response("Falha ao remover o arquivo", 400)
+
+            return Response("Removido", status=200)
 
     @app.route("/api/v1/FileSystem/ListFiles", methods=["GET"])       
     def list_files():
@@ -100,4 +99,4 @@ class Endpoint(Resource):
         return Response(dumps(file_list), status=200, mimetype="application/json")
     
 if __name__ == '__main__':    
-    app.run(host='0.0.0.0', port=2000)
+    app.run(host='0.0.0.0', port=40000)
