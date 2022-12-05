@@ -6,7 +6,7 @@
             "type": "string"
         },
         "ProjectID" : {
-            "type": "integer"
+            "type": "string"
         }
     }
 }

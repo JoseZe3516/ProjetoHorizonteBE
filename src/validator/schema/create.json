@@ -11,7 +11,7 @@
             "maxLenght": 11
         },
         "ProjectID" : {
-            "type": "integer"
+            "type": "string"
         }
     }
 }
