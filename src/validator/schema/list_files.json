@@ -1,9 +1,12 @@
 {
     "type": "object",
-    "required": ["CPF"],
+    "required": ["CPF", "ProjectID"],
     "properties": {
         "CPF": {
             "type": "string"
+        },
+        "ProjectID" : {
+            "type": "integer"
         }
     }
 }

@@ -1,6 +1,6 @@
 {
     "type": "object",
-    "required": ["FileName", "CPF"],
+    "required": ["FileName", "CPF", "ProjectID"],
     "properties": {
         "FileName": {
             "type": "string"
@@ -9,6 +9,9 @@
             "type": "string",
             "minLenght": 11,
             "maxLenght": 11
+        },
+        "ProjectID" : {
+            "type": "integer"
         }
     }
 }
