@@ -24,7 +24,7 @@ class Endpoint(Resource):
 
             file_name: str = request.args["FileName"]
             cpf: str = request.args["CPF"]
-            project_id: int = request.args["ProjectId"]
+            project_id: int = request.args["ProjectID"]
             file: bytes = request.data        
 
             file_system: FileSystem = FileSystem(cpf, project_id)
@@ -42,7 +42,7 @@ class Endpoint(Resource):
             
             file_name: str = request.args["FileName"]
             cpf: str = request.args["CPF"]  
-            project_id: int = request.args["ProjectId"]      
+            project_id: int = request.args["ProjectID"]      
 
             file_system: FileSystem = FileSystem(cpf, project_id)
             file: bytes = file_system.read_file(file_name)
@@ -59,7 +59,7 @@ class Endpoint(Resource):
             
             file_name: str = request.args["FileName"]
             cpf: str = request.args["CPF"]
-            project_id: int = request.args["ProjectId"]
+            project_id: int = request.args["ProjectID"]
             file: bytes = request.data
 
             file_system: FileSystem = FileSystem(cpf, project_id)
@@ -77,7 +77,7 @@ class Endpoint(Resource):
             
             file_name: str = request.args["FileName"]
             cpf: str = request.args["CPF"]
-            project_id: int = request.args["ProjectId"]        
+            project_id: int = request.args["ProjectID"]        
 
             file_system: FileSystem = FileSystem(cpf, project_id)
 
@@ -94,7 +94,7 @@ class Endpoint(Resource):
             return Response(dumps(get_json_schema(schema)), 400, mimetype="application/json")
                 
         cpf: str = request.args["CPF"]   
-        project_id: int = request.args["ProjectId"]     
+        project_id: int = request.args["ProjectID"]     
 
         file_system: FileSystem = FileSystem(cpf, project_id)
         file_list: list = file_system.list_files()
