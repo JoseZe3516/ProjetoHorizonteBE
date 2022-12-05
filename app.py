@@ -24,9 +24,10 @@ class Endpoint(Resource):
 
             file_name: str = request.args["FileName"]
             cpf: str = request.args["CPF"]
+            project_id: int = request.args["ProjectId"]
             file: bytes = request.data        
 
-            file_system: FileSystem = FileSystem(cpf)
+            file_system: FileSystem = FileSystem(cpf, project_id)
 
             if not file_system.create_file(file_name, file):
                 return Response("Falha ao criar o arquivo", 500)
@@ -40,9 +41,10 @@ class Endpoint(Resource):
                 return Response(dumps(get_json_schema(schema)), 400, mimetype="application/json")
             
             file_name: str = request.args["FileName"]
-            cpf: str = request.args["CPF"]        
+            cpf: str = request.args["CPF"]  
+            project_id: int = request.args["ProjectId"]      
 
-            file_system: FileSystem = FileSystem(cpf)
+            file_system: FileSystem = FileSystem(cpf, project_id)
             file: bytes = file_system.read_file(file_name)
 
             if file == None: return Response("Arquivo não encontrado", 404)
@@ -57,9 +59,10 @@ class Endpoint(Resource):
             
             file_name: str = request.args["FileName"]
             cpf: str = request.args["CPF"]
+            project_id: int = request.args["ProjectId"]
             file: bytes = request.data
 
-            file_system: FileSystem = FileSystem(cpf)
+            file_system: FileSystem = FileSystem(cpf, project_id)
 
             if not file_system.update_file(file_name, file):
                 return Response("Falha ao alterar o arquivo", 500)
@@ -73,9 +76,10 @@ class Endpoint(Resource):
                 return Response(dumps(get_json_schema(schema)), 400, mimetype="application/json")
             
             file_name: str = request.args["FileName"]
-            cpf: str = request.args["CPF"]        
+            cpf: str = request.args["CPF"]
+            project_id: int = request.args["ProjectId"]        
 
-            file_system: FileSystem = FileSystem(cpf)
+            file_system: FileSystem = FileSystem(cpf, project_id)
 
             if not file_system.delete_file(file_name):
                 return Response("Falha ao remover o arquivo", 400)
@@ -89,9 +93,10 @@ class Endpoint(Resource):
         if not validator(request.args, schema):
             return Response(dumps(get_json_schema(schema)), 400, mimetype="application/json")
                 
-        cpf: str = request.args["CPF"]        
+        cpf: str = request.args["CPF"]   
+        project_id: int = request.args["ProjectId"]     
 
-        file_system: FileSystem = FileSystem(cpf)
+        file_system: FileSystem = FileSystem(cpf, project_id)
         file_list: list = file_system.list_files()
 
         if file_list == None: return Response("Diretório inexistente", 404)
