@@ -99,7 +99,7 @@ class Endpoint(Resource):
         file_system: FileSystem = FileSystem(cpf, project_id)
         file_list: list = file_system.list_files()
 
-        if file_list == None: return Response("Diretório inexistente", 404)
+        if file_list == None: return Response([], 404, mimetype="application/json")
 
         return Response(dumps(file_list), status=200, mimetype="application/json")
     
